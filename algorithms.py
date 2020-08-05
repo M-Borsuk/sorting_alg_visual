@@ -63,7 +63,7 @@ class InsertionSort(Algorithm):
                 self.array[index] = self.array[index + 1]
                 index -= 1
             self.array[index + 1] = temp
-            self.update_visual(first_swap = self.array[index], self.array[i])
+            self.update_visual(first_swap = self.array[index],second_swap = self.array[i])
 
 class QuickSort(Algorithm):
     
@@ -90,6 +90,18 @@ class QuickSort(Algorithm):
             part = self.partition(arr,start,end)
             self.run_algorithm(arr,start,part +1)
             self.run_algorithm(arr,part - 1, end)
+
+class HeapSort(Algorithm):
+    
+    def __init__(self):
+        super().__init__("Heap Sort")
+        
+    def heap(self,n,i):
+        parent = i
+        left_child = 2*i + 1
+        right_child = 2*i + 2
+        
+            
             
         
                 
