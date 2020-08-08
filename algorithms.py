@@ -11,12 +11,12 @@ class Algorithm(object):
     
     def __init__(self,alg_name):
         self.alg_name = alg_name
-        self.array = random.sample(range(1000),1000)
+        self.array = random.sample(range(1024),1024)
         
     def update_visual(self,first_swap = None, second_swap = None):
         pass
     
-    def run(self):
+    def timer(self):
         self.start_time = time.time()
         
         
