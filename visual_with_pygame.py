@@ -11,13 +11,14 @@ pygame.init()
 #Dimensions and fill color
 WIDTH = int(1024 * 1.5)
 HEIGHT = 860
-FILL_COLOR = pygame.Color("#00cdcd")
+FILL_COLOR = (245,255,250)
+RED = (255,99,71)
 
 # algorithms dict
 algorithms = {"Selection Sort": alg.SelectionSort(),
               "Bubble Sort": alg.BubbleSort(), 
               "Insertion Sort": alg.InsertionSort(), 
-              "Merge Sort": algorithms.MergeSort(), 
+            #  "Merge Sort": algorithms.MergeSort(), 
               "Quick Sort": alg.QuickSort(),
               'Heap Sort': alg.HeapSort(),
               'Random': None}
@@ -31,8 +32,9 @@ start_pos = (10*gap,HEIGHT - (40+b_height))
 
 #fonts
 
-LETTER_FONT = pygame.font.SysFont('comicsans',20,)
+LETTER_FONT = pygame.font.SysFont('comicsans', 20)
 LABEL_FONT = pygame.font.SysFont('comicsans', 40)
+
 
 FPS = 60
 clock = pygame.time.Clock()
@@ -47,9 +49,9 @@ def write_text(*txt,font):
     for text,pos in txt:
         txt = font.render(text,1,(0,0,0))
         screen.blit(txt,pos)
-    pygame.display.update()
+    
 
-def draw():
+def draw_gui():
     temp = pygame.draw.rect(screen,(0,0,0),((0,HEIGHT-100),(WIDTH,100)),5)
     screen.fill((170,170,170),rect =temp)
     for coord in coordinates:
@@ -59,37 +61,68 @@ def draw():
         screen.blit(txt,(coord[0]+5,coord[1]+5))
     temp = pygame.draw.rect(screen,(0,0,0),((0,0),(WIDTH,100)),5)
     screen.fill((170,170,170),rect=temp)    
-    pygame.display.update()
+    
 
+
+
+def draw_array(algorithm,first_swap = None, second_swap = None):
+    screen.fill(FILL_COLOR)
+    check_events()
+    draw_gui()
+    check_events()
+    write_text(("WELCOME  TO  THE  SORTING  VISUALIZER ",(start_pos[0],20)),
+               ("GENERATE  A  NEW  ARRAY  TO  SORT ( PRESS  SPACE )",(start_pos[0],60)),
+                font=LABEL_FONT)
+    write_text(("ALGORITHM  CURRENTLY  USED: {}",(1200,20)),
+                ("TIME :  {}",(1200,60)),font = LETTER_FONT)
+    start_x, end_x = start_pos[0], WIDTH - 100
+    for i in range(len(algorithm.array)):
+        color = RED
+        if first_swap == algorithm.array[i]:
+            color = (0,255,0)
+        elif second_swap == algorithm.array[i]:
+            color = (0,0,0)
+        pygame.draw.rect(screen,color,((i * (end_x - start_x)/len(algorithm.array) + start_x,HEIGHT-100),(1.5,- algorithm.array[i])))
+    pygame.display.update()
+    
+    
+    
 def check_events(): 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT or event.type == K_ESCAPE:
+        if event.type == pygame.QUIT:
             pygame.quit()
-        elif event.type == K_SPACE:
-            alg.Algorithm("")
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            print(pos)
-            for coord in coordinates:
-                x,y,txt = coord
-                distance = math.sqrt((x+b_width//2-pos[0])**2 + (y+b_height//2-pos[1])**2)
-                if distance <= b_width//2:
-                    # actual sorting here
-                    pass
-                    
-
-
-
+        if event.type == pygame.K_SPACE:
+            draw_array(algorithms["Selection Sort"])
+       # if event.type == pygame.MOUSEBUTTONDOWN:
+        #    pos = pygame.mouse.get_pos()
+         #   print(pos)
+          #  for coord in coordinates:
+           #     x,y,txt = coord
+            #    distance = math.sqrt((x+b_width//2-pos[0])**2 + (y+b_height//2-pos[1])**2)
+             #   if distance <= b_width//2:
+              #     print(txt)
+               #    algorithms[txt].run()
+                   
+                   
+                   
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Sorting Visualizer 1.0")
 
 
 while running:
     clock.tick(FPS)
-    screen.fill(FILL_COLOR)
+   # screen.fill(FILL_COLOR)
     check_events()
-    draw()
-    write_text(("WELCOME  TO  THE  SORTING  VISUALIZER ",(start_pos[0],20)),("GENERATE  A  NEW  ARRAY  TO  SORT ( PRESS  SPACE )",(start_pos[0],60)),font=LABEL_FONT)
+   # draw_gui()
+    write_text(("WELCOME  TO  THE  SORTING  VISUALIZER ",(start_pos[0],20)),
+               ("GENERATE  A  NEW  ARRAY  TO  SORT ( PRESS  SPACE )",(start_pos[0],60)),
+                font=LABEL_FONT)
+    write_text(("ALGORITHM  CURRENTLY  USED: {}",(1200,20)),
+                ("TIME :  {}",(1200,60)),font = LETTER_FONT)
+    draw_array(algorithms["Bubble Sort"])
+    alg.SelectionSort().run()
+    pygame.display.update()
+    
     
 
 

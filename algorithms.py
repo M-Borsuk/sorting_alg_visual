@@ -11,14 +11,15 @@ class Algorithm(object):
     
     def __init__(self,alg_name):
         self.alg_name = alg_name
-        self.array = random.sample(range(1024),1024)
+        self.array = random.sample(range(600),600)
         
     def update_visual(self,first_swap = None, second_swap = None):
-        pass
+        import visual_with_pygame
+        visual_with_pygame.draw_array(self,first_swap,second_swap)
     
-    def timer(self):
-        self.start_time = time.time()
-        
+    
+    def run(self):
+        self.run_algorithm()
         
 class BubbleSort(Algorithm):
     
@@ -78,7 +79,7 @@ class QuickSort(Algorithm):
                 i+=1
                 if i < k:
                     array[i],array[k] = array[k],array[i]
-                    self.update_visual(first_swap = array[i],second_swap= array[k])
+                    self.update_visual(first_swap = array[i],second_swap = array[k])
         return i 
         
     def run_algorithm(self,arr = [],start = 0 ,end = 0):
